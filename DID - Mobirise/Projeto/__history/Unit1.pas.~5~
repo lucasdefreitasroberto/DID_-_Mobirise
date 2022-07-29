@@ -1,0 +1,161 @@
+unit Unit1;
+
+interface
+
+uses
+  Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes, Vcl.Graphics,
+  Vcl.Controls, Vcl.Forms, Vcl.Dialogs;
+
+type
+  TForm1 = class(TForm)
+    procedure FormCreate(Sender: TObject);
+  private
+    { Private declarations }
+    procedure createDirectory;
+    procedure ReturnList(var Lista : TStringList);
+    procedure extractResource;
+  public
+    { Public declarations }
+  end;
+
+var
+  Form1: TForm1;
+
+implementation
+
+{$R *.dfm}
+
+procedure TForm1.createDirectory;
+var
+  Patch : String;
+begin
+  Patch := ExtractFilePath(ParamStr(0));
+
+  if not DirectoryExists(Patch + 'HTML') then
+    CreateDir(Patch + 'HTML');
+
+  if not DirectoryExists(Patch + 'HTML\assets') then
+    CreateDir(Patch + 'HTML\assets');
+
+  if not DirectoryExists(Patch + 'HTML\assets\animate.css') then
+    CreateDir(Patch + 'HTML\assets\animate.css');
+
+  if not DirectoryExists(Patch + 'HTML\assets\bootstrap') then
+    CreateDir(Patch + 'HTML\assets\bootstrap');
+
+  if not DirectoryExists(Patch + 'HTML\assets\bootstrap\css') then
+    CreateDir(Patch + 'HTML\assets\bootstrap\css');
+
+  if not DirectoryExists(Patch + 'HTML\assets\bootstrap\js') then
+    CreateDir(Patch + 'HTML\assets\bootstrap\js');
+
+  if not DirectoryExists(Patch + 'HTML\assets\dropdown') then
+    CreateDir(Patch + 'HTML\assets\dropdown');
+
+  if not DirectoryExists(Patch + 'HTML\assets\dropdown\css') then
+    CreateDir(Patch + 'HTML\assets\dropdown\css');
+
+  if not DirectoryExists(Patch + 'HTML\assets\dropdown\js') then
+    CreateDir(Patch + 'HTML\assets\dropdown\js');
+
+  if not DirectoryExists(Patch + 'HTML\assets\images') then
+    CreateDir(Patch + 'HTML\assets\images');
+
+  if not DirectoryExists(Patch + 'HTML\assets\jarallax') then
+    CreateDir(Patch + 'HTML\assets\jarallax');
+
+  if not DirectoryExists(Patch + 'HTML\assets\mobirise') then
+    CreateDir(Patch + 'HTML\assets\mobirise');
+
+  if not DirectoryExists(Patch + 'HTML\assets\mobirise\css') then
+    CreateDir(Patch + 'HTML\assets\mobirise\css');
+
+  if not DirectoryExists(Patch + 'HTML\assets\smooth-scroll') then
+    CreateDir(Patch + 'HTML\assets\smooth-scroll');
+
+  if not DirectoryExists(Patch + 'HTML\assets\tether') then
+    CreateDir(Patch + 'HTML\assets\tether');
+
+  if not DirectoryExists(Patch + 'HTML\assets\theme') then
+    CreateDir(Patch + 'HTML\assets\theme');
+
+  if not DirectoryExists(Patch + 'HTML\assets\theme\css') then
+    CreateDir(Patch + 'HTML\assets\theme\css');
+
+  if not DirectoryExists(Patch + 'HTML\assets\theme\js') then
+    CreateDir(Patch + 'HTML\assets\dropdown\mobirise\theme\js');
+
+  if not DirectoryExists(Patch + 'HTML\assets\touch-swipe') then
+    CreateDir(Patch + 'HTML\assets\touch-swipe');
+
+  if not DirectoryExists(Patch + 'HTML\assets\viewport-checker') then
+    CreateDir(Patch + 'HTML\assets\viewport-checker');
+
+  if not DirectoryExists(Patch + 'HTML\assets\web') then
+    CreateDir(Patch + 'HTML\assets\web');
+
+  if not DirectoryExists(Patch + 'HTML\assets\web\assets') then
+    CreateDir(Patch + 'HTML\assets\web\assets');
+
+  if not DirectoryExists(Patch + 'HTML\assets\web\assets\jquery') then
+    CreateDir(Patch + 'HTML\assets\web\assets\jquery');
+
+end;
+
+procedure TForm1.extractResource;
+var
+  Arq : TResourceStream;
+  Lista : TStringList;
+  I: Integer;
+begin
+  Lista := TStringList.Create;
+  try
+    ReturnList(Lista);
+    for I := 0 to Pred(Lista.Count) do
+    begin
+      if not FileExists(Lista[I]) then
+      begin
+        Arq := TResourceStream.Create(HInstance, 'RC_' + IntToStr(I), RT_RCDATA);
+        try
+          Arq.SaveToFile(Lista[I]);
+        finally
+          Arq.Free;
+        end;
+      end;
+    end;
+  finally
+    Lista.Free;
+  end;
+end;
+
+procedure TForm1.FormCreate(Sender: TObject);
+begin
+  createDirectory;
+end;
+
+procedure TForm1.ReturnList(var Lista: TStringList);
+begin
+  Lista.Add(ExtractFilePath(ParamStr(0)) + 'HTML\index.html');
+  Lista.Add(ExtractFilePath(ParamStr(0)) + 'HTML\project.mobirise');
+  Lista.Add(ExtractFilePath(ParamStr(0)) + 'HTML\assets\animate.css\animate.min.css');
+  Lista.Add(ExtractFilePath(ParamStr(0)) + 'HTML\assets\bootstrap\css\bootstrap.min.css');
+  Lista.Add(ExtractFilePath(ParamStr(0)) + 'HTML\assets\bootstrap\js\bootstrap.min.js');
+  Lista.Add(ExtractFilePath(ParamStr(0)) + 'HTML\assets\dropdown\css\style.css');
+  Lista.Add(ExtractFilePath(ParamStr(0)) + 'HTML\assets\dropdown\js\script.min.js');
+  Lista.Add(ExtractFilePath(ParamStr(0)) + 'HTML\assets\images\1-852x480.jpg');
+  Lista.Add(ExtractFilePath(ParamStr(0)) + 'HTML\assets\images\hashes.json');
+  Lista.Add(ExtractFilePath(ParamStr(0)) + 'HTML\assets\images\jumbotron.jpg');
+  Lista.Add(ExtractFilePath(ParamStr(0)) + 'HTML\assets\images\logo.png');
+  Lista.Add(ExtractFilePath(ParamStr(0)) + 'HTML\assets\jarallax\jarallax.js');
+  Lista.Add(ExtractFilePath(ParamStr(0)) + 'HTML\assets\mobirise\css\mbr-additional.css');
+  Lista.Add(ExtractFilePath(ParamStr(0)) + 'HTML\assets\smooth-scroll\smooth-scroll.js');
+  Lista.Add(ExtractFilePath(ParamStr(0)) + 'HTML\assets\tether\tether.min.css');
+  Lista.Add(ExtractFilePath(ParamStr(0)) + 'HTML\assets\tether\tether.min.js');
+  Lista.Add(ExtractFilePath(ParamStr(0)) + 'HTML\assets\theme\css\style.css');
+  Lista.Add(ExtractFilePath(ParamStr(0)) + 'HTML\assets\theme\js\script.js');
+  Lista.Add(ExtractFilePath(ParamStr(0)) + 'HTML\assets\touch-swipe\jquery.touch-swipe.min.js');
+  Lista.Add(ExtractFilePath(ParamStr(0)) + 'HTML\assets\viewport-checker\jquery.viewportchecker.js');
+  Lista.Add(ExtractFilePath(ParamStr(0)) + 'HTML\assets\web\assets\jquery\jquery.min.js');
+end;
+
+end.
